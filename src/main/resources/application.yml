@@ -1,0 +1,6 @@
+server:
+  port: 8042
+
+spring:
+  main:
+    banner-mode: "off"

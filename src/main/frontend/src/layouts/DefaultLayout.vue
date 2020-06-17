@@ -95,7 +95,7 @@
   @Component
   export default class DefaultLayout extends Vue {
 
-    title = 'Minecraft World Builder';
+    title = 'Minecraft Worlds Builder';
     copyright = 'Logical Data 2020';
     cookieKey = 'settings';
     dark = true;

@@ -26,7 +26,7 @@ import {AxiosStatic} from 'axios';
 Vue.prototype.$axios = axios;
 
 const amplitude = require('amplitude-js');
-amplitude.getInstance().init('00d3b022e5b8bc47188370acbd4f4acc'); // apiKey, userId, config
+amplitude.getInstance().init('00d3b022e5b8bc47188370acbd4f4acc');
 amplitude.getInstance().logEvent('main');
 Vue.prototype.$amplitude = amplitude;
 
@@ -43,9 +43,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App),
-  created() {
-    // Prevent blank screen
-    this.$router.push('/')
-  }
+  render: h => h(App)
 }).$mount('#app')

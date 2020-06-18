@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@mdi/font": "^5.3.45",
+    "amplitude-js": "^6.2.0",
     "core-js": "^3.6.4",
     "csvjson-json_beautifier": "^5.0.4",
     "file-saver": "^2.0.2",

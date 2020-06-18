@@ -24,23 +24,24 @@
       <span>
         &copy; {{ copyright }}
       </span>
+<!--      <v-tooltip top>-->
+<!--        <template v-slot:activator="{ on, attrs }">-->
+<!--          <v-btn-->
+<!--              class="ml-6"-->
+<!--              small text fab-->
+<!--              v-on="on"-->
+<!--              v-bind="attrs"-->
+<!--              @click.stop="snackbar = !snackbar"-->
+<!--          >-->
+<!--            <v-icon small>mdi-view-headline</v-icon>-->
+<!--          </v-btn>-->
+<!--        </template>-->
+<!--        <span>Privacy & Cookie Policy</span>-->
+<!--      </v-tooltip>-->
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
               class="ml-6"
-              small text fab
-              v-on="on"
-              v-bind="attrs"
-              @click.stop="snackbar = !snackbar"
-          >
-            <v-icon small>mdi-view-headline</v-icon>
-          </v-btn>
-        </template>
-        <span>Privacy & Cookie Policy</span>
-      </v-tooltip>
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
               small text fab
               v-on="on"
               v-bind="attrs"
@@ -136,7 +137,7 @@
 
       const settings: SettingsCookie = this.$cookies.get(this.cookieKey);
       this.dark = settings.dark;
-      this.snackbar = !settings.privacyPolicyAccepted;
+      //this.snackbar = !settings.privacyPolicyAccepted;
       this.$vuetify.theme.dark = this.dark;
     }
   }

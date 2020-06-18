@@ -1,13 +1,13 @@
 <template>
   <v-dialog v-model="dialog" width="700">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" rounded small color="indigo">
+      <v-btn v-on="on" rounded small color="primary">
         <v-icon>mdi-pencil-outline</v-icon>
         Edit Biomes
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline grey darken-3" primary-title>
+      <v-card-title class="headline secondary" primary-title>
         Edit Biomes
         <v-spacer/>
         <v-btn

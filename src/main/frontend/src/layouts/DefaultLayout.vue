@@ -10,15 +10,15 @@
       </template>
     </v-app-bar>
 
-    <v-content>
-      <v-container fluid>
+    <v-main>
+      <v-container>
         <v-row no-gutters align="center" justify="top">
           <v-col>
             <router-view/>
           </v-col>
         </v-row>
       </v-container>
-    </v-content>
+    </v-main>
 
     <v-footer :color="color" app align-right fixed dense class="caption">
       <span>
@@ -27,21 +27,7 @@
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-              small text fab
               class="ml-6"
-              v-on="on"
-              v-bind="attrs"
-              :color="dark ? 'white' : 'black'"
-              @click="setDark"
-          >
-            <v-icon small>mdi-opacity</v-icon>
-          </v-btn>
-        </template>
-        <span>Toggle Dark/Light</span>
-      </v-tooltip>
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
               small text fab
               v-on="on"
               v-bind="attrs"
@@ -52,14 +38,28 @@
         </template>
         <span>Privacy & Cookie Policy</span>
       </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+              small text fab
+              v-on="on"
+              v-bind="attrs"
+              :color="dark ? 'white' : 'black'"
+              @click="setDark"
+          >
+            <v-icon small>mdi-opacity</v-icon>
+          </v-btn>
+        </template>
+        <span>Toggle Dark/Light</span>
+      </v-tooltip>
       <v-spacer/>
       <span>
        <a target="_blank" href="https://www.minecraft.net/">Minecraft</a> is copyright
-         <a target="_blank" href="https://www.mojang.com/">Mojang AB</a> and is not affiliated with this site.
+         <a target="_blank" href="https://www.mojang.com/">Mojang AB</a> and is not affiliated with this site
       </span>
     </v-footer>
 
-    <v-snackbar v-model="snackbar" :timeout="0" multi-line>
+    <v-snackbar v-model="snackbar" :timeout="-1" multi-line>
       <v-row no-gutters justify="center" align="center">
         <v-col cols="8">
           <v-card>
@@ -69,11 +69,11 @@
               </span>
             </v-card-title>
             <v-card-text>
-              This site uses cookies to store user preferences. Nothing produced by the user on this site is saved or logged.
+              This site uses cookies to store user preferences. There is no user tracking and the JSON produced by this app is not stored or logged.
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col class="flex text-center">
           <v-btn color="error" small @click="privacyPolicyClicked">
             Accept and Close
           </v-btn>
@@ -95,7 +95,7 @@
   @Component
   export default class DefaultLayout extends Vue {
 
-    title = 'Minecraft Worlds Builder';
+    title = 'Minecraft World Builder';
     copyright = 'Logical Data 2020';
     cookieKey = 'settings';
     dark = true;

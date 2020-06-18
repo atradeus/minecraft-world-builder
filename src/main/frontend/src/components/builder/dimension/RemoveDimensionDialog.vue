@@ -5,13 +5,13 @@
         <v-btn
             v-on="on"
             small absolute fab bottom right
-            color="red"
+            color="error"
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline grey darken-3" primary-title>
+        <v-card-title class="headline secondary" primary-title>
           Delete Dimension
         </v-card-title>
 
@@ -21,10 +21,10 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialog = false">
+          <v-btn color="primary"  rounded @click="dialog = false">
             Cancel
           </v-btn>
-          <v-btn color="error" text @click="remove(name)">
+          <v-btn color="error" rounded @click="remove(name)">
             Remove
           </v-btn>
         </v-card-actions>

@@ -27,6 +27,12 @@ const routes: Array<RouteConfig> = [
         name: 'contact',
         component: Contact
       },
+      {
+        path: '/*',
+        redirect: {
+          name: 'root'
+        }
+      }
     ]
   },
 ]

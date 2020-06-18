@@ -1,73 +1,85 @@
 <template>
-  <v-card>
-    <v-card-text>
-      <v-row no-gutters>
-        <v-col cols="9">
-          <v-combobox
-              multiple chips solo
-              label="Structures"
-              item-text="name"
-              item-value="namespaceId"
-              v-model="selected"
-              :items="items"
-          ></v-combobox>
-        </v-col>
-        <v-col class="text-center mt-1">
-          <v-btn
-              color="primary"
-              :disabled="selected.length === 0"
-              @click="addSelected">
-            Add Selected
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-chip
-              v-for="(s, i) in structuresSet.values()" :key="i"
-              @click:close="removeStructure(s)"
-              @click="showStructure(s)"
-              close
-              class="ma-1"
-          >
-            {{ s }}
-          </v-chip>
-        </v-col>
-      </v-row>
-      <v-row class="mt-12" dense v-if="structuresSet.size > 0">
-        <v-col class="subtitle-1 text-center mt-3">
-          {{ structureName }}
-        </v-col>
-        <v-col class="">
-          <v-text-field
-              filled rounded
-              label="spacing"
-              v-model="structure.spacing"
-              type="number"
-              @change="setStructure"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-              filled rounded
-              label="separation"
-              v-model="structure.separation"
-              type="number"
-              @change="setStructure"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-              filled rounded
-              label="Salt"
-              v-model="structure.salt"
-              type="number"
-              @change="setStructure"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+  <div>
+    <v-row no-gutters>
+      <v-col cols="8">
+        <v-combobox
+            multiple chips solo
+            label="Structures"
+            item-text="name"
+            item-value="namespaceId"
+            v-model="selected"
+            :items="items"
+        ></v-combobox>
+      </v-col>
+      <v-col class="flex text-center mt-1">
+        <v-btn
+            rounded
+            color="primary"
+            :disabled="selected.length === 0"
+            @click="addSelected"
+        >
+          Add Structures
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col>
+        <v-chip
+            v-for="(s, i) in structuresSet.values()" :key="i"
+            @click:close="removeStructure(s)"
+            @click="showStructure(s)"
+            close
+            class="ma-1"
+        >
+          {{ s }}
+        </v-chip>
+      </v-col>
+    </v-row>
+    <v-card v-if="structuresSet.size > 0" class="mt-6">
+      <v-card-text>
+        <v-row class="mt-0" dense>
+          <v-col class="text-h6 text-center">
+            {{ structureName }}
+          </v-col>
+        </v-row>
+        <v-row class="mt-0" justify="center">
+          <v-col cols="3" class="">
+            <v-text-field
+                filled rounded
+                label="Spacing"
+                v-model="structure.spacing"
+                type="number"
+                @change="setStructure"
+                hint="Average distance between two structure placement attempts of this type in chunks"
+                :persistent-hint="showHints"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-text-field
+                filled rounded
+                label="Separation"
+                v-model="structure.separation"
+                type="number"
+                @change="setStructure"
+                hint="Minimum distance between two structures of this type in chunks; must be less than spacing"
+                :persistent-hint="showHints"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-text-field
+                filled rounded
+                label="Salt"
+                v-model="structure.salt"
+                type="number"
+                @change="setStructure"
+                hint="A number that assists in randomization"
+                :persistent-hint="showHints"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -76,7 +88,7 @@
   import {getStructures, MinecraftType} from "@/data";
 
   @Component
-  export default class StructureDialog extends Vue {
+  export default class StructureView extends Vue {
 
     @Prop() value?: StructureMap;
     @Prop() showHints?: boolean;

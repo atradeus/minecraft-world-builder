@@ -273,15 +273,22 @@ export function getDefaultEndDimension(seed: number) {
   };
 }
 
-export function getDefaultDimensionType(): DimensionType {
+export function getDefaultDimensionType(name: string): DimensionType {
   return {
+    name: name,
     ultrawarm: false,
-    natural: false,
+    natural: true,
     shrunk: false,
-    ambient_light: 0.5,
+    ambient_light: 0.0,
     fixed_time: undefined,
     has_skylight: true,
-    has_ceiling: false
+    has_ceiling: false,
+    piglin_safe: true,
+    bed_works: true,
+    respawn_anchor_works: true,
+    has_raids: true,
+    logical_height: 256,
+    infiniburn: 'minecraft:infiniburn_overworld'
   };
 }
 
@@ -345,9 +352,9 @@ export function getGeneratorSettingsNoiseDefault(): GeneratorSettingsNoise {
   }
 }
 
-export function getDefaultDimension(seed: number) {
+export function getDefaultDimension(name: string, seed: number) {
   return {
-    type: getDefaultDimensionType(),
+    type: getDefaultDimensionType(name),
     generator: {
       type: "minecraft:noise",
       seed: seed,
@@ -355,7 +362,7 @@ export function getDefaultDimension(seed: number) {
       biome_source: {
         seed: seed,
         large_biomes: false,
-        type: ''
+        type: 'minecraft:vanilla_layered'
       },
     }
   };
@@ -372,6 +379,51 @@ export function getBiome(name: string): Biome {
     },
     biome: `minecraft:${name}`
   };
+}
+
+export function getSuperflatExample(): World {
+  const seed = getRandomSeed();
+  return {
+    bonus_chest: false,
+    seed: seed,
+    generate_features: true,
+    dimensions: {
+      "minecraft:overworld": {
+        type: "minecraft:overworld",
+        generator: {
+          seed: seed,
+          settings: {
+            structures: {
+              structures: {
+                "minecraft:village": {
+                  spacing: 32,
+                  separation: 8,
+                  salt: getRandomInt(10000000, 19999999)
+                },
+                "minecraft:bastion_remnant": {
+                  spacing: 32,
+                  separation: 8,
+                  salt: getRandomInt(10000000, 19999999)
+                }
+              }
+            },
+            layers: [
+              {
+                height: 31,
+                block: "minecraft:dirt"
+              },
+              {
+                height: 1,
+                block: "minecraft:grass_block"
+              }
+            ],
+            biome: "minecraft:plains"
+          },
+          type: "minecraft:flat"
+        }
+      }
+    }
+  }
 }
 
 export function getWorldExample(): World {

@@ -5,12 +5,12 @@
           rounded
           v-on="on"
           small
-          color="indigo"
+          color="primary"
       >
         Generator Settings
       </v-btn>
     </template>
-    <v-card flat height="700">
+    <v-card flat min-height="800">
       <v-card-title class="headline grey darken-3" primary-title>
         Noise Generator Settings
         <v-spacer/>
@@ -40,7 +40,7 @@
             <v-tab-item key="settings">
               <v-card flat>
                 <v-card-text>
-                  <v-row class="mt-3" dense>
+                  <v-row class="mt-3">
                     <v-col>
                       <v-text-field
                           filled rounded
@@ -78,6 +78,48 @@
                       ></v-select>
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col cols="5">
+                      <v-select
+                          filled rounded
+                          label="Default Block"
+                          v-model="settings.default_block.Name"
+                          :items="defaultBlocks"
+                          item-text="name"
+                          item-value="namespaceId"
+                          @change="emitInput"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                          filled rounded
+                          label="Block State"
+                          v-model="settings.default_block.Properties.state"
+                          @change="emitInput"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="5">
+                      <v-select
+                          filled rounded
+                          label="Default Fluid"
+                          v-model="settings.default_fluid.Name"
+                          :items="defaultFluids"
+                          item-text="text"
+                          item-value="value"
+                          @change="emitInput"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                          filled rounded
+                          label="Block State"
+                          v-model="settings.default_fluid.Properties.state"
+                          @change="emitInput"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -107,14 +149,14 @@
 <script lang="ts">
   import {Vue, Component, Prop, Watch} from "vue-property-decorator";
   import {GeneratorSettingsFlat, GeneratorSettingsNoise, instanceOfGeneratorSettingsFlat, instanceOfGeneratorSettingsNoise} from "@/types";
-  import StructureDialog from "@/components/builder/generator/StructureDialog.vue";
+  import StructureView from "@/components/builder/generator/StructureView.vue";
   import NoiseView from "@/components/builder/generator/NoiseView.vue";
   import LayerView from "@/components/builder/generator/LayerView.vue";
-  import {getBiomes} from "@/data";
+  import {getBiomes, getBlocks} from "@/data";
 
   @Component({
     components: {
-      StructureDialog,
+      StructureDialog: StructureView,
       NoiseView,
       LayerView
     },
@@ -129,6 +171,54 @@
 
     dialog = false;
     tab = 'settings';
+
+    defaultBlocks = getBlocks();
+
+    // defaultBlocks = [
+    //   {
+    //     text: 'Empty',
+    //     value: 'empty'
+    //   },
+    //   {
+    //     text: 'Stone',
+    //     value: 'stone'
+    //   },
+    //   {
+    //     text: 'End Stone',
+    //     value: 'minecraft:end_stone'
+    //   },
+    //   {
+    //     text: 'Lava',
+    //     value: 'lava'
+    //   },
+    //   {
+    //     text: 'Water',
+    //     value: 'water'
+    //   },
+    // ];
+
+    defaultFluids = [
+      {
+        text: 'Empty',
+        value: 'empty'
+      },
+      {
+        text: 'Flowing Lava',
+        value: 'flowing_lava'
+      },
+      {
+        text: 'Flowing Water',
+        value: 'flowing_water'
+      },
+      {
+        text: 'Lava',
+        value: 'lava'
+      },
+      {
+        text: 'Water',
+        value: 'water'
+      },
+    ];
 
     @Watch('value', {immediate: true, deep: true})
     valueChanged() {

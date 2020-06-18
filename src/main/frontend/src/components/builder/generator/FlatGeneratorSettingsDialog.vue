@@ -1,94 +1,66 @@
 <template>
-  <v-dialog v-model="dialog" width="850">
-    <template v-slot:activator="{ on }">
-      <v-btn
-          rounded
-          v-on="on"
-          small
-          color="indigo"
-      >
-        Generator Settings
-      </v-btn>
-    </template>
-    <v-card flat height="700">
-      <v-card-title class="headline grey darken-3" primary-title>
-        Flat Generator Settings
-        <v-spacer/>
-        <v-btn
-            class="mt-1"
-            color="red"
-            text fab small
-            @click="dialog = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
+  <v-card flat>
+    <v-card-title class="">
+      Flat Generator Settings
+    </v-card-title>
+    <v-card-text class="mt-3">
+      <v-tabs background-color="" v-model="tab">
+        <v-tab key="layers">
+          Layers
+        </v-tab>
+        <v-tab key="structures">
+          Structures
+        </v-tab>
+        <v-tabs-items v-model="tab">
+          <v-tab-item key="layers">
+            <v-row dense class="mt-6">
+              <v-col>
+                <layer-view v-if="settings" v-model="settings.layers" :show-hints="showHints"/>
+              </v-col>
+            </v-row>
+          </v-tab-item>
 
-      <v-card-text class="mt-3">
-        <v-tabs background-color="" v-model="tab">
-          <v-tab key="settings">
-            Settings
-          </v-tab>
-          <v-tab key="layers">
-            Layers
-          </v-tab>
-          <v-tab key="structures">
-            Structures
-          </v-tab>
-
-          <v-tabs-items v-model="tab">
-            <v-tab-item key="settings">
-              <v-card flat>
-                <v-card-text>
-                  <v-row class="mt-3" dense>
-                    <v-col cols="6">
-                      <v-combobox
-                          label="Biome"
-                          v-model="biome"
-                          item-text="name"
-                          :items="biomes"
-                          @change="selectBiome"
-                          hint="Biome for village type"
-                          :persistent-hint="showHints"
-                      ></v-combobox>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-
-            <v-tab-item key="layers">
-              <layer-view v-if="settings" v-model="settings.layers" :show-hints="showHints"/>
-            </v-tab-item>
-
-            <v-tab-item key="structures">
-              <v-card flat>
-                <v-card-text>
-                  <structure-dialog
-                      v-if="settings && settings.structures"
-                      v-model="settings.structures.structures"
-                      :show-hints="showHints"
-                  />
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-tabs>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+          <v-tab-item key="structures">
+            <v-row dense class="mt-6">
+              <v-col cols="6">
+                <v-select
+                    label="Village Type"
+                    v-model="biome"
+                    item-text="name"
+                    item-value="namespaceId"
+                    :items="biomes"
+                    @change="selectBiome"
+                    hint="Biome for village type"
+                    :persistent-hint="showHints"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row dense class="mt-6">
+              <v-col>
+                <structure-dialog
+                    v-if="settings && settings.structures"
+                    v-model="settings.structures.structures"
+                    :show-hints="showHints"
+                />
+              </v-col>
+            </v-row>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-tabs>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
   import {Vue, Component, Prop, Watch} from "vue-property-decorator";
   import {GeneratorSettingsFlat, instanceOfGeneratorSettingsFlat} from "@/types";
-  import StructureDialog from "@/components/builder/generator/StructureDialog.vue";
+  import StructureView from "@/components/builder/generator/StructureView.vue";
   import NoiseView from "@/components/builder/generator/NoiseView.vue";
   import LayerView from "@/components/builder/generator/LayerView.vue";
 
   @Component({
     components: {
-      StructureDialog,
+      StructureDialog: StructureView,
       NoiseView,
       LayerView
     },
@@ -104,10 +76,8 @@
     dialog = false;
     tab = 'settings';
 
-    biome = {
-      name: 'Plains',
-      namespaceId: 'plains'
-    }
+    biome = 'plains';
+
     biomes = [
       {
         name: 'Plains',
@@ -133,15 +103,20 @@
 
     @Watch('value', {immediate: true, deep: true})
     valueChanged() {
+      //console.log(" FlatGeneratorSettingsDialog valueChanged");
+      //console.log(JSON.stringify(this.value));
       if (this.value) {
         this.settings = this.value;
+        if (this.settings.biome) {
+          this.biome = this.settings.biome.replace('minecraft:', '');
+        }
       }
     }
 
     selectBiome() {
       this.$nextTick(() => {
         if (this.settings && instanceOfGeneratorSettingsFlat(this.settings)) {
-          this.settings.biome = `minecraft:${this.biome.namespaceId}`
+          this.settings.biome = `minecraft:${this.biome}`
           this.emitInput();
         }
       });

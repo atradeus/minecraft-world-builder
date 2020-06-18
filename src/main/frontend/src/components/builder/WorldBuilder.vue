@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col cols="5" offset="1">
+      <v-col cols="4" :offset="offset">
         <div class="d-flex">
           <!--          <div class="mr-2">-->
           <!--             <upload-dialog v-model="world"/>-->
@@ -13,7 +13,7 @@
             </v-btn>
           </div>
           <div class="mt-1 ml-2">
-            <v-btn small rounded outlined text @click="showJson = !showJson">
+            <v-btn small rounded outlined text @click="toggleJson">
               <span v-if="showJson">Hide JSON</span>
               <span v-else>Show JSON</span>
             </v-btn>
@@ -28,23 +28,21 @@
             filled rounded
             label="Presets"
             v-model="preset"
-            :items="items"
+            :items="presetItems"
             append-outer-icon="mdi-check"
             @click:append-outer="setWorld"
         ></v-select>
       </v-col>
     </v-row>
-    <v-row no-gutters class="mt-6">
-      <v-col cols="4" offset="1">
+    <v-row dense class="mt-6">
+      <v-col cols="3" :offset="offset">
         <seed-input-field
             v-model="world.seed"
             :show-hints="showHints"
             hint="The numerical seed of the world"
         />
       </v-col>
-    </v-row>
-    <v-row dense>
-      <v-col cols="2" offset="1">
+      <v-col cols="2">
         <v-select
             filled rounded
             label="Bonus Chest"
@@ -62,7 +60,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col cols="7" offset="1">
+      <v-col :cols="showJson ? 7 : 8" :offset="offset">
         <dimension-map-view
             v-model="world.dimensions"
             :seed="world.seed"
@@ -74,16 +72,16 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col>{{ world }}</v-col>
-    </v-row>
+<!--    <v-row>-->
+<!--      <v-col>{{ world }}</v-col>-->
+<!--    </v-row>-->
 
   </v-container>
 </template>
 
 <script lang="ts">
   import {Component, Vue, Watch} from 'vue-property-decorator';
-  import {getDefaultWorld, getEmptyWorld, getRandomSeed, getWorldExample, World} from "@//types";
+  import {getDefaultWorld, getEmptyWorld, getRandomSeed, getSuperflatExample, getWorldExample, World} from "@//types";
   import DimensionMapView from "@/components/builder/dimension/DimensionMapView.vue";
   import DownloadDialog from "@/components/DownloadDialog.vue";
   import UploadDialog from "@/components/UploadDialog.vue";
@@ -103,14 +101,14 @@
 
     showHints = false;
     showJson = true;
+    offset = 1;
 
     world = getEmptyWorld();
 
     preset = 'Empty World';
-    items = ['Empty World', 'Standard World'];
+    presetItems = ['Empty World', 'Standard World', 'Superflat'];
 
     get json() {
-      //return this.world ? JSON.stringify(this.world, null, 2) : '';
       return this.world ? json_beautifier(this.world, {dropQuotesOnNumbers: true}) : '';
     }
 
@@ -122,8 +120,31 @@
         case 'Standard World':
           this.world = getDefaultWorld();
           break;
+        case 'Superflat':
+          this.world = getSuperflatExample();
+          break;
         default:
           this.world = getDefaultWorld();
+      }
+      this.$forceUpdate();
+    }
+
+    toggleJson() {
+      //console.log(`${this.$vuetify.breakpoint.name} ${this.$vuetify.breakpoint.height} ${this.$vuetify.breakpoint.width}`);
+      this.showJson = !this.showJson;
+      if (this.$vuetify.breakpoint.name == 'xl') {
+        //this.offset = this.offset == 1 ? 2 : 1;
+        this.offset = this.showJson ? 1 : 2;
+      } else {
+        this.offset = this.showJson ? 0 : 2;
+      }
+    }
+
+    setOffset() {
+      if (this.$vuetify.breakpoint.name == 'xl') {
+        this.offset = this.showJson ? 1 : 2;
+      } else {
+        this.offset = this.showJson ? 0 : 2;
       }
     }
 
@@ -138,6 +159,7 @@
       if (Object.keys(this.$store.state.world).length) {
         this.world = this.$store.state.world;
       }
+      this.setOffset();
     }
   }
 </script>

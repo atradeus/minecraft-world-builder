@@ -73,10 +73,7 @@
     @Prop() dimensions?: DimensionMap;
 
     dimension: Dimension | null = null;
-
     type = '';
-    // dimensionType = getDefaultDimensionType();
-
     types = [
       {
         value: 'minecraft:overworld',
@@ -127,8 +124,8 @@
     setType() {
       this.$nextTick(() => {
         if (this.type == '') {
-          // if (this.dimension)
-          //   this.dimension.type = this.dimensionType;
+          if (this.dimension && this.name)
+            this.dimension.type = getDefaultDimensionType(this.name);
         } else {
           if (this.dimension)
             this.dimension.type = this.type;
@@ -140,9 +137,7 @@
     valueChanged() {
       if (this.value) {
         this.dimension = this.value;
-        if (this.instanceOfDimensionType(this.dimension.type)) {
-          //this.dimensionType = this.dimension.type;
-        } else {
+        if (!this.instanceOfDimensionType(this.dimension.type)) {
           this.type = this.dimension.type;
         }
       }

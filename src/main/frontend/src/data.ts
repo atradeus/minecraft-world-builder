@@ -417,7 +417,7 @@ export function getBiomes(): MinecraftType[] {
     },
     {
       name: "The Nether",
-      namespaceId: "nether",
+      namespaceId: "nether_wastes",
       "id": 8
     },
     {

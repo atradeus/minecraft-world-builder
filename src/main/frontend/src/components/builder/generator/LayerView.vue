@@ -1,36 +1,31 @@
 <template>
-  <v-card height="400">
-    <v-card-text>
-      <!--      <v-row dense>-->
-      <!--        <v-col>-->
-      <!--          L-->
-      <!--        </v-col>-->
-      <!--      </v-row>-->
-      <v-row dense>
-        <v-col>
-          <v-combobox
-              label="Blocks"
-              item-text="name"
-              item-value="namespaceId"
-              v-model="block"
-              :items="options"
-          ></v-combobox>
-        </v-col>
-        <v-col>
-          <v-btn
-              class="mt-3 ml-2"
-              rounded text outlined
-              @click="addSelected"
-          >
-            Add Layer
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-card elevation="3" v-for="(l, i) in layers" :key="i" class="mt-2">
-            <v-row no-gutters align="center">
-              <v-col cols="6" class="title ml-3">
+  <div>
+    <v-row dense>
+      <v-col>
+        <v-combobox
+            label="Blocks"
+            item-text="name"
+            item-value="namespaceId"
+            v-model="block"
+            :items="options"
+        ></v-combobox>
+      </v-col>
+      <v-col>
+        <v-btn
+            class="mt-3 ml-2"
+            rounded text outlined
+            @click="addSelected"
+        >
+          Add Layer
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <v-col>
+        <draggable v-model="layers" @start="drag=true" @end="drag=false" @change="emitInput" class="mt-2">
+          <v-card elevation="1" v-for="(l, i) in layers" :key="i" class="mt-2">
+            <v-row no-gutters align="center" justify="center">
+              <v-col cols="6" class="text-h6 ml-6">
                 {{ l.block }}
               </v-col>
               <v-col cols="3">
@@ -43,32 +38,32 @@
                     type="number"
                     @change="emitInput"
                 ></v-text-field>
-                <v-spacer></v-spacer>
               </v-col>
-              <v-col class="ml-12 mt-0">
-                <v-btn small fab outlined color="red" @click="removeSelected(i)">
+              <v-col no-gutters class="ml-12 mt-0">
+                <v-btn small fab outlined color="error" @click="removeSelected(i)">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
           </v-card>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+        </draggable>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script lang="ts">
   import {Vue, Component, Prop, Watch} from "vue-property-decorator";
   import {Layer} from "@/types";
   import {getBlocks} from "@/data";
+  import draggable from 'vuedraggable'
+  import * as _ from 'lodash'
 
-  // export interface Layer {
-  //   height: number;
-  //   block: string;
-  // }
-
-  @Component
+  @Component({
+    components: {
+      draggable,
+    }
+  })
   export default class LayerView extends Vue {
 
     @Prop() value?: Layer[];
@@ -76,17 +71,19 @@
 
     block = {
       name: 'Grass Block',
-      namespaceId: 'minecraft:grass_block'
+      namespaceId: 'grass_block'
     };
 
     layers: Layer[] = [];
-
     options = getBlocks();
 
     @Watch('value', {immediate: true, deep: true})
     valueChanged() {
       if (this.value) {
-        this.layers = this.value;
+        // IMPORTANT
+        // Reverse is done so that in teh UI the top layer is on top,
+        // but for Minecraft, the top layer is the last layer in the array
+        this.layers = _.cloneDeep(this.value).reverse();
       }
     }
 
@@ -106,7 +103,10 @@
     }
 
     emitInput() {
-      this.$emit('input', this.layers);
+      // IMPORTANT
+      // Reverse is done so that in teh UI the top layer is on top,
+      // but for Minecraft, the top layer is the last layer in the array
+      this.$emit('input', _.cloneDeep(this.layers).reverse());
     }
   }
 </script>

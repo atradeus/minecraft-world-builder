@@ -1,11 +1,11 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-card-title>
       Biome Source
     </v-card-title>
     <v-card-text>
-      <v-row>
-        <v-col cols="8">
+      <v-row dense>
+        <v-col cols="8" lg="6">
           <seed-input-field
               v-model="biomeSource.seed"
               :show-hints="showHints"
@@ -13,8 +13,8 @@
           />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="6">
+      <v-row dense>
+        <v-col cols="5">
           <v-select
               filled rounded
               label="Type"
@@ -27,8 +27,8 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="type === 'minecraft:vanilla_layered'">
-        <v-col cols="4">
+      <v-row v-if="type === 'minecraft:vanilla_layered'" dense>
+        <v-col cols="4" lg="3">
           <v-select
               filled rounded
               label="Large Biomes"
@@ -38,8 +38,8 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="type === 'minecraft:multi_noise'">
-        <v-col cols="6">
+      <v-row v-if="type === 'minecraft:multi_noise'" dense>
+        <v-col cols="5" lg="3">
           <v-select
               filled rounded
               label="Preset"
@@ -53,8 +53,8 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="type === 'minecraft:fixed'">
-        <v-col cols="8">
+      <v-row v-if="type === 'minecraft:fixed'" dense>
+        <v-col cols="8" lg="8">
           <v-select
               filled rounded
               label="Biome"
@@ -68,28 +68,30 @@
       </v-row>
 
       <template v-if="type === 'minecraft:checkerboard'">
-        <v-row dense>
-          <v-col cols="3">
+        <v-row no-gutters>
+          <v-col cols="3" lg="2">
             <v-text-field
                 filled rounded
                 label="Scale"
                 v-model="biomeSource.scale"
                 hint="Determines the size of the squares on an exponential scale"
                 :persistent-hint="showHints"
+                @change="emitInput"
             ></v-text-field>
           </v-col>
-          <v-row dense>
-            <v-col class="mt-3">
-              <v-select
-                  filled rounded multiple
-                  label="Biomes"
-                  v-model="biomeSource.biomes"
-                  :items="allBiomes"
-                  item-text="name"
-                  item-value="namespaceId"
-              ></v-select>
-            </v-col>
-          </v-row>
+        </v-row>
+        <v-row no-gutters>
+          <v-col cols="10" lg="8" class="mt-0">
+            <v-select
+                filled rounded multiple
+                label="Biomes"
+                v-model="biomeSource.biomes"
+                :items="allBiomes"
+                item-text="name"
+                item-value="namespaceId"
+                @change="emitInput"
+            ></v-select>
+          </v-col>
         </v-row>
       </template>
 
@@ -106,8 +108,9 @@
   import {Vue, Component, Prop, Watch} from "vue-property-decorator";
   import {BiomeSource, getBiome, getRandomSeed} from "@//types";
   import EditBiomesDialog from "@/components/builder/generator/EditBiomesDialog.vue";
-  import {getBiomes, MinecraftType} from "@/data";
+  import {getBiomes, getBlocks, MinecraftType} from "@/data";
   import SeedInputField from "@/components/builder/SeedInputField.vue";
+  import * as _ from 'lodash'
 
   @Component({
     components: {
@@ -163,38 +166,36 @@
     ];
 
     changeType() {
-      this.$nextTick(() => {
-        if (this.biomeSource) {
-          this.biomeSource = {
-            seed: this.biomeSource.seed,
-            type: this.type
-          };
-          switch (this.type) {
-            case 'minecraft:vanilla_layered':
-              this.biomeSource = Object.assign({}, this.biomeSource, {large_biomes: false})
-              break;
-            case 'minecraft:multi_noise':
-              this.preset = 'minecraft:nether';
-              this.biomeSource = Object.assign({}, this.biomeSource, {preset: 'minecraft:nether'})
-              break;
-            case 'minecraft:the_end':
-              // nothing to do
-              break;
-            case 'minecraft:fixed':
-              this.biome = 'plains'
-              this.biomeSource = Object.assign({}, this.biomeSource, {biome: 'minecraft:plains'})
-              break;
-            case 'minecraft:checkerboard':
-              this.biomeSource = Object.assign({}, this.biomeSource,
-                {
-                  scale: 32,
-                  biomes: ['plains']
-                });
-              break;
-          }
-          this.emitInput();
+      if (this.biomeSource) {
+        this.biomeSource = {
+          seed: this.biomeSource.seed,
+          type: this.type
+        };
+        switch (this.type) {
+          case 'minecraft:vanilla_layered':
+            this.biomeSource = Object.assign({}, this.biomeSource, {large_biomes: false})
+            break;
+          case 'minecraft:multi_noise':
+            this.preset = 'minecraft:nether';
+            this.biomeSource = Object.assign({}, this.biomeSource, {preset: 'minecraft:nether'})
+            break;
+          case 'minecraft:the_end':
+            // nothing to do
+            break;
+          case 'minecraft:fixed':
+            this.biome = 'plains'
+            this.biomeSource = Object.assign({}, this.biomeSource, {biome: 'minecraft:plains'})
+            break;
+          case 'minecraft:checkerboard':
+            this.biomeSource = Object.assign({}, this.biomeSource,
+              {
+                scale: 256,
+                biomes: ['plains']
+              });
+            break;
         }
-      });
+        this.emitInput();
+      }
     }
 
     changeBiome() {
@@ -230,7 +231,7 @@
     @Watch('value', {immediate: true, deep: true})
     valueChanged() {
       if (this.value) {
-        this.biomeSource = this.value;
+        this.biomeSource = _.cloneDeep(this.value);
         this.type = this.biomeSource.type;
         if (this.biomeSource.preset) {
           this.preset = this.biomeSource.preset;
@@ -241,7 +242,6 @@
     }
 
     emitInput() {
-      //console.log("BiomeSourceView emitInput " + JSON.stringify(this.biomeSource));
       this.$emit('input', this.biomeSource);
     }
   }

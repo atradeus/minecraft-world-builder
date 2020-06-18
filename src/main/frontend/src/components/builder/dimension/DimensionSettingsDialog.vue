@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="dialog" width="800">
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" rounded small color="indigo">
-        <v-icon>mdi-pencil-outline</v-icon>
+      <v-btn v-on="on" rounded small color="primary">
+<!--        <v-icon>mdi-pencil-outline</v-icon>-->
         Dimension Settings
       </v-btn>
     </template>
@@ -20,8 +20,7 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-
-        <v-row>
+        <v-row dense class="mt-8">
           <v-col>
             <v-select
                 filled rounded
@@ -53,7 +52,7 @@
             ></v-select>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row dense>
           <v-col>
             <v-select
                 filled rounded
@@ -74,8 +73,6 @@
                 :persistent-hint="showHints"
             ></v-select>
           </v-col>
-        </v-row>
-        <v-row>
           <v-col>
             <v-text-field
                 filled rounded
@@ -84,6 +81,28 @@
                 hint="How much light the dimension has, default is 0.5 in the demo file (for upper and lower bounds as well as precise effect"
                 :persistent-hint="showHints"
             ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col>
+            <v-select
+                filled rounded
+                label="Piglin Safe"
+                v-model="dimensionType.piglin_safe"
+                :items="[true, false]"
+                hint="Whether piglins will shake and transform to zombified piglins"
+                :persistent-hint="showHints"
+            ></v-select>
+          </v-col>
+          <v-col>
+            <v-select
+                filled rounded
+                label="Has Raids"
+                v-model="dimensionType.has_raids"
+                :items="[true, false]"
+                hint="Whether players with the Bad Omen effect can cause a raid"
+                :persistent-hint="showHints"
+            ></v-select>
           </v-col>
           <v-col>
             <v-text-field
@@ -95,8 +114,57 @@
             ></v-text-field>
           </v-col>
         </v-row>
-
-
+        <v-row dense>
+          <v-col>
+            <v-select
+                filled rounded
+                label="Bed Works"
+                v-model="dimensionType.bed_works"
+                :items="[true, false]"
+                hint="Whether players can use a bed to sleep"
+                :persistent-hint="showHints"
+            ></v-select>
+          </v-col>
+          <v-col>
+            <v-select
+                filled rounded
+                label="Respawn Anchor Works"
+                v-model="dimensionType.respawn_anchor_works"
+                :items="[true, false]"
+                hint="Whether piglins will shake and transform to zombified piglins"
+                :persistent-hint="showHints"
+            ></v-select>
+          </v-col>
+          <v-col>
+            <!-- Empty -->
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col>
+            <v-text-field
+                filled rounded
+                label="Logical Height"
+                v-model="dimensionType.logical_height"
+                hint="The maximum height to which chorus fruits and nether portals can bring players within this dimension. This excludes portals that were already built above the limit as they still connect normally"
+                :persistent-hint="showHints"
+            ></v-text-field>
+          </v-col>
+          <v-col>
+            <v-select
+                filled rounded
+                :items="infiniburnOptions"
+                item-value="value"
+                item-text="text"
+                label="Infiniburn"
+                v-model="dimensionType.infiniburn"
+                hint="A resource location defining what block tag to use for infiniburn"
+                :persistent-hint="showHints"
+            ></v-select>
+          </v-col>
+          <v-col>
+            <!-- Empty -->
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -110,19 +178,25 @@
   @Component
   export default class DimensionSettingsDialog extends Vue {
 
-    // piglin_safe: Whether piglins will shake and transform to zombified piglins
-    //  bed_works: Whether players can use a bed to sleep.[needs testing]
-    //  respawn_anchor_works: Whether players can charge and use respawn anchors.[needs testing]
-    //  has_raids: Whether players with the Bad Omen effect can cause a raid.
-    //  logical_height: The maximum height to which chorus fruits and nether portals can bring players within this dimension. This excludes portals that were already built above the limit as they still connect normally.[needs testing]
-    //  infiniburn: A resource location defining what block tag to use for infiniburn
-
-
-
     @Prop() value?: DimensionType;
     @Prop() showHints?: boolean;
 
-    dimensionType?: DimensionType = getDefaultDimensionType();
+    dimensionType?: DimensionType = getDefaultDimensionType('minecraft:overworld');
+
+    infiniburnOptions = [
+      {
+        text: 'Overworld',
+        value: 'minecraft:infiniburn_overworld'
+      },
+      {
+        text: 'Nether',
+        value: 'minecraft:infiniburn_nether'
+      },
+      {
+        text: 'End',
+        value: 'minecraft:infiniburn_end'
+      }
+    ];
 
     dialog = false;
 

@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column">
-    <div class="mb-3">
+    <div class="mb-8">
       <add-dimension-dialog v-model="dimensions" :seed="seed"/>
     </div>
     <div v-for="(name, i) in dimensionKeys" :key="i" class="mb-8">

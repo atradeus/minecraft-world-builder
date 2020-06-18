@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
           small fab
-          color="blue-grey"
+          color="secondary"
           v-on="on"
           v-bind="attrs"
           @click="exportJson"

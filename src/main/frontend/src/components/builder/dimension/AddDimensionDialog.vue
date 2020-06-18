@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="700">
+  <v-dialog v-model="dialog" width="600">
     <template v-slot:activator="{ on }">
       <v-btn
           rounded
@@ -8,11 +8,11 @@
           color="primary"
       >
         <v-icon>mdi-plus</v-icon>
-        Dimension
+        Add Dimension
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline grey darken-3" primary-title>
+      <v-card-title class="headline secondary" primary-title>
         Add Dimension
       </v-card-title>
 
@@ -43,15 +43,10 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" text @click="dialog = false">
+        <v-btn color="error" rounded @click="dialog = false">
           Cancel
         </v-btn>
-        <v-btn
-            color="error"
-            text
-            :disabled="disabled"
-            @click="add()"
-        >
+        <v-btn color="primary" rounded :disabled="disabled" @click="add()">
           Add
         </v-btn>
       </v-card-actions>
@@ -133,7 +128,7 @@
             dimension = getDefaultEndDimension(this.seed);
             break;
           default:
-            dimension = getDefaultDimension(this.seed);
+            dimension = getDefaultDimension(name, this.seed);
         }
 
         Vue.set(this.dimensions, name, dimension);

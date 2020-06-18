@@ -1,11 +1,13 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <world-builder></world-builder>
-      </v-col>
-    </v-row>
-  </v-container>
+  <world-builder></world-builder>
+<!--  -->
+<!--  <v-container>-->
+<!--    <v-row no-gutters>-->
+<!--      <v-col>-->
+<!--        <world-builder></world-builder>-->
+<!--      </v-col>-->
+<!--    </v-row>-->
+<!--  </v-container>-->
 </template>
 
 <script lang="ts">

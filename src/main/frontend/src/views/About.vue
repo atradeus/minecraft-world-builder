@@ -3,9 +3,8 @@
     <v-row no-gutters align="center">
       <v-col cols="8" offset="2">
         <v-card height="500">
-          <!-- <v-card-title>About</v-card-title>-->
           <v-card-text class="text-subtitle-1">
-            <p class="">
+            <p>
               Based on documentation from <a target="_blank" href="https://minecraft.gamepedia.com/Custom">Official Minecraft Wiki</a>
             </p>
             <p>
@@ -13,7 +12,7 @@
               game.
               I have not tested every combination and I do not know many default values or ranges. Don't be surprised if something doesn't work.
               If you find a bug in the tool, you can send an email to
-              <a href="mailto:support@logicaldata.io?subject=Minecraft%20world%20builder">support@logicaldata.io</a>
+              <a href="mailto:support@logicaldata.io?subject=Minecraft%20world%20builder">minecraft@logicaldata.io</a>
             </p>
           </v-card-text>
         </v-card>

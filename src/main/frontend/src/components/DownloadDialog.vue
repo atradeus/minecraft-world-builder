@@ -26,6 +26,7 @@
 
     exportJson() {
       if (this.json) {
+        this.$amplitude.getInstance().logEvent('exportJson');
         saveAs(new Blob([this.json]), "worldgen_settings_export.json");
       }
     }

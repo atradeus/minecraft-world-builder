@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "app.name",
+      "type": "java.lang.String",
+      "description": "Description for app.name."
+    },
+    {
+      "name": "app.url",
+      "type": "java.lang.String",
+      "description": "Description for app.url."
+    },
+    {
+      "name": "app.email",
+      "type": "java.lang.String",
+      "description": "Description for app.email."
+    }
+  ]
+}

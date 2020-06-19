@@ -39,7 +39,7 @@
       </v-row>
 
       <v-row v-if="type === 'minecraft:multi_noise'" dense>
-        <v-col cols="5" lg="3">
+        <v-col cols="5">
           <v-select
               filled rounded
               label="Preset"
@@ -110,7 +110,6 @@
   import EditBiomesDialog from "@/components/builder/generator/EditBiomesDialog.vue";
   import {getBiomes, getBlocks, MinecraftType} from "@/data";
   import SeedInputField from "@/components/builder/SeedInputField.vue";
-  import * as _ from 'lodash'
 
   @Component({
     components: {
@@ -214,24 +213,25 @@
     }
 
     changePreset() {
-      this.$nextTick(() => {
-        if (this.biomeSource) {
-          if (this.preset == 'minecraft:nether') {
-            this.biomeSource.preset = this.preset;
-            this.biomeSource.biomes = undefined;
-          } else {
-            this.$set(this.biomeSource, 'biomes', [getBiome('minecraft:plains')]);
-            this.biomeSource.preset = undefined;
-          }
-          this.emitInput();
+      if (this.biomeSource) {
+        this.biomeSource = {
+          seed: this.biomeSource.seed,
+          type: this.type
+        };
+        if (this.preset == 'minecraft:nether') {
+          this.biomeSource = Object.assign({}, this.biomeSource, {preset: 'minecraft:nether'})
+        } else {
+          this.biomeSource = Object.assign({}, this.biomeSource,
+            {biomes: [getBiome('minecraft:plains')]})
         }
-      });
+        this.emitInput();
+      }
     }
 
     @Watch('value', {immediate: true, deep: true})
     valueChanged() {
       if (this.value) {
-        this.biomeSource = _.cloneDeep(this.value);
+        this.biomeSource = this.value;
         this.type = this.biomeSource.type;
         if (this.biomeSource.preset) {
           this.preset = this.biomeSource.preset;

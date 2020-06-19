@@ -6,7 +6,7 @@
         <v-tabs centered>
           <v-tab to="/">Home</v-tab>
           <v-tab to="about">About</v-tab>
-<!--          <v-tab to="/contact">Contact</v-tab>-->
+          <!--          <v-tab to="/contact">Contact</v-tab>-->
         </v-tabs>
       </template>
     </v-app-bar>
@@ -25,20 +25,20 @@
       <span>
         &copy; {{ copyright }}
       </span>
-<!--      <v-tooltip top>-->
-<!--        <template v-slot:activator="{ on, attrs }">-->
-<!--          <v-btn-->
-<!--              class="ml-6"-->
-<!--              small text fab-->
-<!--              v-on="on"-->
-<!--              v-bind="attrs"-->
-<!--              @click.stop="snackbar = !snackbar"-->
-<!--          >-->
-<!--            <v-icon small>mdi-view-headline</v-icon>-->
-<!--          </v-btn>-->
-<!--        </template>-->
-<!--        <span>Privacy & Cookie Policy</span>-->
-<!--      </v-tooltip>-->
+      <!--      <v-tooltip top>-->
+      <!--        <template v-slot:activator="{ on, attrs }">-->
+      <!--          <v-btn-->
+      <!--              class="ml-6"-->
+      <!--              small text fab-->
+      <!--              v-on="on"-->
+      <!--              v-bind="attrs"-->
+      <!--              @click.stop="snackbar = !snackbar"-->
+      <!--          >-->
+      <!--            <v-icon small>mdi-view-headline</v-icon>-->
+      <!--          </v-btn>-->
+      <!--        </template>-->
+      <!--        <span>Privacy & Cookie Policy</span>-->
+      <!--      </v-tooltip>-->
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -127,7 +127,19 @@
         undefined, undefined, undefined, "Strict");
     }
 
+    checkUpdate() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+          for (const registration of registrations) {
+            registration.update();
+          }
+        })
+      }
+    }
+
     mounted() {
+      this.checkUpdate();
+
       //this.$cookies.remove(this.cookieKey);
       if (!this.$cookies.isKey(this.cookieKey)) {
         this.setSettingsCookie({

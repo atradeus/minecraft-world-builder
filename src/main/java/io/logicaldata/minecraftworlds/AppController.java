@@ -12,7 +12,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Properties;
 
 /**
  * @author Anthony Merlo
@@ -23,6 +27,8 @@ import java.util.Locale;
 public class AppController {
 
     private static final Logger logger = LoggerFactory.getLogger(AppController.class);
+
+    private static final String GIT_PROPERTIES = "git.properties";
 
     private final AppService appService;
     private final JavaMailSender javaMailSender;
@@ -54,6 +60,20 @@ public class AppController {
         return ResponseEntity.ok(locale);
     }
 
+    @GetMapping("/version")
+    public ResponseEntity<?> version() {
+        try {
+            final Properties properties = new Properties();
+            try (final InputStream inputStream = Objects.requireNonNull(getClass().getClassLoader()
+                    .getResourceAsStream(GIT_PROPERTIES), GIT_PROPERTIES)) {
+                properties.load(inputStream);
+            }
+            return ResponseEntity.ok(new GitInfo(properties.getProperty("git.commit.id")));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/contact")
     public ResponseEntity<?> contact(@RequestBody ContactRequest request) {
         try {
@@ -72,9 +92,9 @@ public class AppController {
         }
     }
 
-    //    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-//    public record ContactRequest(String email, String subject, String content) {
-//    }
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+    public record GitInfo(String commitId) {
+    }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     public static class ContactRequest {

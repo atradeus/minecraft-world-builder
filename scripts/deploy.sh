@@ -7,7 +7,7 @@ PORT=8420
 
 cd ..
 
-./mvnw -DskipTests clean install spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE}
+./mvnw -DskipTests clean package spring-boot:build-image -Dspring-boot.build-image.imageName=${IMAGE}
 
 if [ "$(docker ps -q -f name=${NAME})" ]; then
   docker rm -f ${NAME}

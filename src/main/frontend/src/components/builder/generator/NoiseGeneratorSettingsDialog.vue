@@ -174,29 +174,6 @@
 
     defaultBlocks = getBlocks();
 
-    // defaultBlocks = [
-    //   {
-    //     text: 'Empty',
-    //     value: 'empty'
-    //   },
-    //   {
-    //     text: 'Stone',
-    //     value: 'stone'
-    //   },
-    //   {
-    //     text: 'End Stone',
-    //     value: 'minecraft:end_stone'
-    //   },
-    //   {
-    //     text: 'Lava',
-    //     value: 'lava'
-    //   },
-    //   {
-    //     text: 'Water',
-    //     value: 'water'
-    //   },
-    // ];
-
     defaultFluids = [
       {
         text: 'Empty',

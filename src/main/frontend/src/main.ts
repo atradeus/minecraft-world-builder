@@ -7,28 +7,15 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import VueCookies from 'vue-cookies'
-
-// export default {
-//   install: (Vue, {apiKey, userId, config}) => {
-//     amplitude.getInstance().init(apiKey, userId, config);
-//
-//     // eslint-disable-next-line
-//     Vue.prototype.$amplitude = amplitude;
-//   },
-// };
-// import './plugins/axios'
-
-Vue.use(VueCookies)
-
 import axios from 'axios'
 import {AxiosStatic} from 'axios';
 
-Vue.prototype.$axios = axios;
-
 const amplitude = require('amplitude-js');
 amplitude.getInstance().init('00d3b022e5b8bc47188370acbd4f4acc');
-amplitude.getInstance().logEvent('main');
+amplitude.getInstance().logEvent('App Loaded');
+
 Vue.prototype.$amplitude = amplitude;
+Vue.prototype.$axios = axios;
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -36,6 +23,8 @@ declare module 'vue/types/vue' {
     $amplitude: any;
   }
 }
+
+Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 

@@ -1,11 +1,8 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col cols="4" :offset="offset">
+      <v-col cols="7" :offset="offset">
         <div class="d-flex">
-          <!--          <div class="mr-2">-->
-          <!--             <upload-dialog v-model="world"/>-->
-          <!--          </div>-->
           <div class="mt-1">
             <v-btn small rounded outlined text @click="showHints = !showHints">
               <span v-if="showHints">Hide Hints</span>
@@ -21,17 +18,17 @@
           <div class="ml-12">
             <download-dialog :json="json"/>
           </div>
+          <div class="ml-12">
+            <v-select
+                filled rounded
+                label="Presets"
+                v-model="preset"
+                :items="presetItems"
+                append-outer-icon="mdi-check"
+                @click:append-outer="setWorld"
+            ></v-select>
+          </div>
         </div>
-      </v-col>
-      <v-col cols="3">
-        <v-select
-            filled rounded
-            label="Presets"
-            v-model="preset"
-            :items="presetItems"
-            append-outer-icon="mdi-check"
-            @click:append-outer="setWorld"
-        ></v-select>
       </v-col>
     </v-row>
     <v-row dense class="mt-6">
@@ -72,9 +69,9 @@
       </v-col>
     </v-row>
 
-<!--    <v-row>-->
-<!--      <v-col>{{ world }}</v-col>-->
-<!--    </v-row>-->
+    <!--    <v-row>-->
+    <!--      <v-col>{{ world }}</v-col>-->
+    <!--    </v-row>-->
 
   </v-container>
 </template>
@@ -126,6 +123,7 @@
         default:
           this.world = getDefaultWorld();
       }
+      this.$amplitude.getInstance().logEvent('Preset', {preset: this.preset});
       this.$forceUpdate();
     }
 

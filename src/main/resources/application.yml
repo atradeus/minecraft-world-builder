@@ -5,3 +5,32 @@ server:
 spring:
   main:
     banner-mode: "off"
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anthony@logicaldata.io
+    password: 
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          ssl:
+            trust: smtp.gmail.com
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: false
+
+app:
+  name: Minecraft Worlds
+  url: https://minecraft.logicaldata.io
+  email: anthony@logicaldata.io
+
+logging:
+  pattern:
+    level: "%X{user} %5p"
+  level:
+    root: WARN
+    io.logicaldata: DEBUG

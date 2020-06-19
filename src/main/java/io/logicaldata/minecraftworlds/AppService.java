@@ -61,11 +61,7 @@ public class AppService {
                 html = IOUtils.toString(new URL("https://www.digminecraft.com/lists/item_id_list_pc.php"), UTF_8);
                 Files.writeString(biomeFile, html, CREATE_NEW);
             }
-
             Set<String> exclude = Set.of("potion", "disc", "arrow");
-
-            // </a><br>(<em>minecraft:<wbr>golden_<wbr>axe</em>)</td>
-
             //Pattern p = Pattern.compile("(?=<tr.+?alt=\"([^\"]+).+?<a href.+?>([^<]+).+?<td>([^<]+))", Pattern.DOTALL);
             Pattern p = Pattern.compile("(?=<tr.+?<a href.+?>([^<]+).+?minecraft:<wbr>(.+?(?=</em>)).+?<td>([^<]+))", Pattern.DOTALL);
             return p.matcher(html.substring(html.indexOf("table id=\"minecraft_items"), html.indexOf("</table")))

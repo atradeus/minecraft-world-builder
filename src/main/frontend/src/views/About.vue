@@ -8,10 +8,9 @@
               Based on documentation from <a target="_blank" href="https://minecraft.gamepedia.com/Custom">Official Minecraft Wiki</a>
             </p>
             <p>
-              Custom worlds are new feature in Minecraft 1.16. The documentation is incomplete and there are probably bugs in the tool and in the
-              game.
-              I have not tested every combination and I do not know many default values or ranges. Don't be surprised if something doesn't work.
-              If you find a bug in the tool, you can send an email to
+              Custom worlds are new and experimental feature in Minecraft 1.16. The documentation is incomplete and there are probably bugs in the
+              tool and in the game. I have not tested every combination and I do not know many default values or ranges. Don't be surprised if
+              something doesn't work. If you find a bug in the tool, you can send an email to
               <a href="mailto:support@logicaldata.io?subject=Minecraft%20world%20builder">minecraft@logicaldata.io</a>
             </p>
           </v-card-text>

@@ -18,11 +18,11 @@
             <router-view/>
           </v-col>
         </v-row>
-        <v-row no-gutters align="center" justify="top">
-          <v-col>
-            <app-update-dialog/>
-          </v-col>
-        </v-row>
+<!--        <v-row no-gutters align="center" justify="top">-->
+<!--          <v-col>-->
+<!--            <app-update-dialog/>-->
+<!--          </v-col>-->
+<!--        </v-row>-->
       </v-container>
     </v-main>
 
@@ -93,7 +93,7 @@
 
 <script lang="ts">
   import {Vue, Component} from "vue-property-decorator";
-  import AppUpdateDialog from "@/components/AppUpdateDialog.vue";
+  // import AppUpdateDialog from "@/components/AppUpdateDialog.vue";
 
   interface SettingsCookie {
     dark: boolean;
@@ -102,7 +102,7 @@
 
   @Component({
     components: {
-      AppUpdateDialog
+      // AppUpdateDialog
     },
   })
   export default class DefaultLayout extends Vue {

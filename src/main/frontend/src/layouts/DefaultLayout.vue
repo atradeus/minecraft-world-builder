@@ -18,13 +18,18 @@
             <router-view/>
           </v-col>
         </v-row>
+        <v-row no-gutters align="center" justify="top">
+          <v-col>
+            <app-update-dialog/>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
 
     <v-footer :color="color" app align-right fixed dense class="caption">
-      <span>
-        &copy; {{ copyright }}
-      </span>
+<!--      <span>-->
+<!--        &copy; {{ copyright }}-->
+<!--      </span>-->
       <!--      <v-tooltip top>-->
       <!--        <template v-slot:activator="{ on, attrs }">-->
       <!--          <v-btn-->
@@ -88,13 +93,18 @@
 
 <script lang="ts">
   import {Vue, Component} from "vue-property-decorator";
+  import AppUpdateDialog from "@/components/AppUpdateDialog.vue";
 
   interface SettingsCookie {
     dark: boolean;
     privacyPolicyAccepted: boolean;
   }
 
-  @Component
+  @Component({
+    components: {
+      AppUpdateDialog
+    },
+  })
   export default class DefaultLayout extends Vue {
 
     title = 'Minecraft World Builder';

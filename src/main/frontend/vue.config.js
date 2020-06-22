@@ -24,12 +24,6 @@ module.exports = {
     }
   },
 
-  pwa: {
-    workboxOptions: {
-      skipWaiting: true
-    }
-  },
-
   devServer: {
     proxy: {
       '/api/*': {

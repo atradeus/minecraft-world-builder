@@ -13,7 +13,7 @@
     "core-js": "^3.6.4",
     "csvjson-json_beautifier": "^5.0.4",
     "file-saver": "^2.0.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "register-service-worker": "^1.7.1",
     "roboto-fontface": "*",
     "typeface-roboto": "^0.0.75",
